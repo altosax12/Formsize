@@ -1,0 +1,76 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Form.Site" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+        <style type="text/css">
+
+
+        .auto-style2 {
+            height: 138px;
+            width: 1384px;
+        }
+        .auto-style3 {
+            height: 40px;
+        }
+        .auto-style4 {
+            height: 1154px;
+            width: 1380px;
+            margin-bottom: 0px;
+        }
+        .auto-style5 {
+            height: 112px;
+        }
+    </style>
+
+    </asp:ContentPlaceHolder>
+</head>
+<body style="height: 1507px; width: 1385px; margin-left: 72px;">
+    
+
+    <form id="form1" runat="server">
+
+        
+     
+        <div class="auto-style2" style="background-color: transparent; background-image: url(Images/backgroundc.jpg);">
+
+        </div>
+        <div class="auto-style3" style="padding: 11px; margin: 20px">
+            <asp:Menu ID="Menu1" runat="server" Orientation="Horizontal" OnMenuItemClick="Menu1_MenuItemClick" Height="12px">
+                <Items>
+                    <asp:MenuItem Text="Home" Value="Home"></asp:MenuItem>
+                    <asp:MenuItem Text="Video Games" Value="Items"></asp:MenuItem>
+                    <asp:MenuItem Text="Toys &amp; Collectables " Value="Toys &amp; Collectables "></asp:MenuItem>
+                    <asp:MenuItem Text="Electronics " Value="Electronics "></asp:MenuItem>
+                    <asp:MenuItem Text="Clothing " Value="Clothing "></asp:MenuItem>
+                </Items>
+                <StaticMenuItemStyle BorderColor="White" BorderWidth="18px" />
+            </asp:Menu>
+            <br />
+        </div>
+        
+     
+         <asp:ContentPlaceHolder ID ="Body" runat="server">
+
+    <div class="auto-style4">
+       
+       
+    </div>
+
+        </asp:ContentPlaceHolder>
+    <div class="auto-style5" style="text-align: center">
+        Contact us with 
+        <asp:ImageButton ID="ImageButton1" runat="server" Height="105px" ImageUrl="~/Images/facebookl.png" OnClick="ImageButton1_Click" Width="109px" />
+&nbsp;
+        <asp:ImageButton ID="ImageButton2" runat="server" Height="92px" ImageUrl="~/Images/twitter.png" Width="100px" />
+&nbsp;
+        <asp:ImageButton ID="ImageButton3" runat="server" Height="89px" ImageUrl="~/Images/insta.png" Width="101px" />
+    </div>
+        
+     
+    </form>
+         </body>
+</html>
