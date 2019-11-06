@@ -1,216 +1,331 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Add-drop.aspx.cs" Inherits="Form.Add_drop" %>
+<%@ Page MasterPageFile="~/Site.Master" Language="C#" AutoEventWireup="true"  CodeBehind="product.aspx.cs" Inherits="Form.product" %>
 
-<!DOCTYPE html>
 
-<<html xmlns = "https://www.w3.org/1999/xhtml">
-   <head>
-      <meta http-equiv = "Content-Type" content = "text/html; charset = iso-8859-1" />
-      <title>Untitled Document</title>
-      <script type = "text/javascript" src = "jquery-1.3.2.js"></script>
-      <script type = "text/javascript" src = "jquery.livequery.js"></script>
-      <link href = "css.css" rel = "stylesheet" />
+
+
+
+
+ 
+
+	  <asp:Content ContentPlaceHolderID="Header" ID ="Header" runat="server">
+          <script type = "text/javascript">
+                $(function(){
+
+		$("#cart-items").slideUp();
+		$(".cart").on("click", function () {
+		$("#cart-items").slideToggle();
+		});
+
+		$("#items-basket").text("(" + ($("#list-item").children().length) + ")");
+
 		
-      <script type = "text/javascript">
+		$(".item").on("click", function () {
+         $("#cart-items").slideDown();
+     setTimeout(function(){
+        $("#cart-items").slideUp();
+     }, 2000)
+			//add items to basket
+			$(this).each(function () {
+				var name = $(this).children(".item-detail").children("h4").text();
+				var remove = "<button class='remove'> X </button>";
+				var cena = "<span class='eachPrice'>" + (parseFloat($(this).children(".item-detail").children(".prices").children(".price").text())) + "</span>";
+				$("#list-item").append("<li>" + name + "&#09; - &#09;" + cena + "$" + remove + "</li>");
 
-         $(document).ready(function() {
-	         var Arrays = new Array();
-            $('#wrap li').mousemove(function(){
-               var position = $(this).position();
-               $('#cart').stop().animate({
-                  left   : position.left+'px',
-               },250,function(){
-               });			
-            }).mouseout(function(){
-            });	
+				//number of items in basket
+				$("#items-basket").text("(" + ($("#list-item").children().length) + ")");
+				$("#items-basket").text();
+        
+	        //calculate total price
+	        var totalPrice = 0;
+		        $(".eachPrice").each(function (){ 
+		          var cenaEach = parseFloat($(this).text());
+		          totalPrice+=cenaEach;
+		        });
+		        $("#total-price").text(totalPrice + "$");
+			});
 
-            $('#wrap li').click(function(){
-               var thisID = $(this).attr('id');
-               var itemname  = $(this).find('div .name').html();
-               var itemprice = $(this).find('div .price').html();
+			//remove items from basket
+			$(".remove").on("click", function () {
+				$(this).parent().remove();
 
-               if(include(Arrays,thisID)){
-                  var price = $('#each-'+thisID).children(".shopp-price").
-                     find('em').html();
-                  var quantity = $('#each-'+thisID).children(".shopp-quantity").html();
-                  quantity = parseInt(quantity)+parseInt(1);
-                  var total = parseInt(ite mprice)*parseInt(quantity);
-
-                  $('#each-'+thisID).children(".shopp-price").
-                     find('em').html(total);
-                  $('#each-'+thisID).children(".shopp-quantity").html(quantity);
-
-                  var prev_charges = $('.cart-total span').html();
-                  prev_charges = parseInt(prev_charges)-parseInt(price);
-                  prev_charges = parseInt(prev_charges)+parseInt(total);
-                  
-                  $('.cart-total span').html(prev_charges);
-                  $('#total-hidden-charges').val(prev_charges);
-               } else {
-                  Arrays.push(thisID);
-                  var prev_charges = $('.cart-total span').html();
-                  prev_charges = parseInt(prev_charges)+parseInt(itemprice);
-
-                  $('.cart-total span').html(prev_charges);
-                  $('#total-hidden-charges').val(prev_charges);
-
-                  $('#left_bar .cart-info').append(' <div class = "shopp" id = "each-'+thisID+'">
-                        <div class = "label">'+itemname+'</div>
-                        <div class = "shopp-price"> 
-                           $<em>'+itemprice+'</em></div>
-                        <span class = "shopp-quantity">1</span>
-                        <img src = "remove.png" class = "remove" />
-                        <br class = "all" />
-                     </div>');
-
-                  $('#cart').css({'-webkit-transform' :
-                     'rotate(20deg)','-moz-transform' : 'rotate(20deg)' });
-               }
-
-               setTimeout('angle()',200);
-            });	
-            $('.remove').livequery('click', function() {
-               var deduct = $(this).parent().children(".shopp-price").find('em').html();
-               var prev_charges = $('.cart-total span').html();
-               var thisID = $(this).parent().attr('id').replace('each-','');
-               var pos = getpos(Arrays,thisID);
-               
-               Arrays.splice(pos,1,"0")
-               prev_charges = parseInt(prev_charges)-parseInt(deduct);
-               
-               $('.cart-total span').html(prev_charges);
-               $('#total-hidden-charges').val(prev_charges);
-               $(this).parent().remove();
-            });	
-            $('#Submit').livequery('click', function() {
-               var totalCharge = $('#total-hidden-charges').val();
-               
-               $('#left_bar').html('Total Charges: $'+totalCharge);
-               return false;
-            });	
-         });
-         function include(arr, obj) {
-            for(var i = 0; i<arr.length; i++) {
-               if (arr[i] == obj) return true;
-            }
-         }
-         function getpos(arr, obj) {
-            for(var i = 0; i<arr.length; i++) {
-               if (arr[i] == obj) return i;
-            }
-         }
-         function angle(){$('#cart').css({'-webkit-transform' : 
-            'rotate(0deg)','-moz-transform' : 'rotate(0deg)' });}
-
+		        var totalPrice = 0;
+		        $(".eachPrice").each(function (){ 
+		          var cenaEach = parseFloat($(this).text());
+		          totalPrice+=cenaEach;
+		        });
+		        $("#total-price").text(totalPrice + "$");
+				$("#items-basket").text("(" + ($("#list-item").children().length) + ")");
+			});
+		});
+})
       </script>
-   </head>
+       <style type="text/css">
 
-   <body>
-      <div align = "left">
-         <div id = "wrap" align = "left">
-            
-            <ul>
-               <li id = "1">
-                  <img src = "a1.png" class = "items" height = "100" alt = "" />
+*{
+	margin: 0px;
+	padding: 0px;
+}
 
-                  <br clear = "all" />
-                  <div><span class = "name">Learn Java: 
-                     Price</span>: $<span class = "price">
-                     800</span> </div>
-               </li>
+body{
+	background-image: url('https://lh3.googleusercontent.com/-QEYT2a1VA-s/V9IhCZNMfKI/AAAAAAAAAuY/kuuJ3LD4L3QG_0EwaNFhIalJPOD-C7opQCJoC/w1600-h900/black%2Band%2Bgreen%2Bshards.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+}
 
-               <li id = "2">
-                  <img src = "5.png" class = "items" height = "100" alt = "" />
+img{
+	width: 100%;
+	height: 200px;
+}
 
-                  <br clear = "all" />
-                  <div><span class = "name">Learn HTML
-                     </span>: $<span class = "price">500 
-                     </span></div>
-               </li>
+.fa{
+  cursor: pointer;
+}
 
-               <li id="3">
-                  <img src = "1.png" class = "items" height = "100" alt = "" />
+.header{
+	width: 100%;
+	overflow: auto;
+	background-color: #31353d;
+	color: #00a000;
+	clear: both;
+	padding: 20px 50px;
+	box-sizing: border-box;	
+}
 
-                  <br clear = "all" />
-                  <div><span class = "name">Learn Android 
-                     </span>: $<span class = "price">450
-                     </span></div>
-               </li>
+.heading{
+	float: left;
+}
 
-               <li id = "4">
-                  <img src = "6.png" class = "items" height = "100" alt = "" />
+.cart{
+	float: right;
+	text-align: center;
+}
 
-                  <br clear = "all" />
-                  <div><span class = "name">Learn SVG 
-                     </span>: $<span class = "price">1200
-                     </span></div>
-               </li>
+.total-text p{
+	display: inline;
+}
 
-               <li id = "5">
-                  <img src = "7.png" class = "items" height = "100" alt = "" />
+#cart-items{
+	position: absolute;
+	right: 20px;
+	top: 10%;
+	background-color: #31353d;
+	margin-top: 50px;
+	padding: 50px 40px;
+	z-index: 999;
+}
 
-                  <br clear = "all" />
-                  <div> <span class = "name">Learn Bootstrap
-                     </span>: $<span class = "price">65
-                     </span></div>
-               </li>
+.item{
+	position: relative;
+	float: left;
+	margin: 1%;
+	border: 1px solid #00a000;
+	width: 30%;
+	text-align: center;
+	background-color: rgba(0, 0, 0, 0.3);
+}
 
-               <li id = "6">
-                  <img src = "5.png" class = "items" height = "100" alt = "" />
+.item-detail h4{
+	color: #fff;
+}
 
-                  <br clear = "all" />
-                  <div><span class = "name">Learn HTML
-                     </span>: $<span class = "price">800
-                     </span> </div>
-               </li>
+.item-detail p{
+	color: #00a000;
+	font-weight: bold;
+}
 
-               <li id = "7">
-                  <img src = "7.png" class = "items" height = "100" alt = "" />
+.prices p{
+	display: inline;
+}
 
-                  <br clear = "all" />
-                  <div><span class = "name"> Learn Bootstrap
-                     </span>: $<span class = "price">45
-                     </span></div>
-               </li>
+.overflow{
+	background-color: rgba(0, 0, 0, 0.5);
+	color: #00a000;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 80%;
+	opacity: 0;
+	transition: opacity 1s;
+}
 
-               <li id = "8">
-                  <img src = "6.png" class = "items" height = "100" alt = "" />
+.overflow i{
+	position: absolute;
+    top: 20%;
+    left: 40%;
+}
 
-                  <br clear = "all" />
-                  <div><span class = "name">Learn SVG
-                     </span>: $<span class = "price">900 
-                     </span></div>
-               </li>
+.overflow:hover{
+	opacity: 1;
+}
 
-               <li id = "9">
-                  <img src = "8.png" class = "items" height = "100" alt = "" />
+.price-display{
+	float: right;
+}
 
-                  <br clear = "all" />
-                  <div><span class = "name">Learn Angular Js
-                     </span>: $<span class = "price">20
-                     </span></div>
-               </li>
+.remove{
+	background-color: #00a000;
+	border-color:  #00a000;
+	border-radius: 3px;
+	color: #fff;
+	margin: 0px 5px;
+	padding: 0px 2px;
+	float: right;
+}
 
-            </ul>
-            <br clear = "all" />
-         </div>
-         
-         <div id = "left_bar"> 
-            <form action = "#" id="cart_form" name = "cart_form">
-               <div class = "cart-info"></div>
-               
-               <div class = "cart-total">
-                  <b>Total Charges:     
-                           </b> 
-                     $<span>0</span>
+#list-item li{
+	margin: 10px 0px;
+}
+           .auto-style1 {
+               width: 97%;
+               overflow: auto;
+               background-color: #31353d;
+               color: #00a000;
+               clear: both;
+               padding: 20px 50px;
+               box-sizing: border-box;
+           }
+           .auto-style2 {
+               height: 573px;
+               width: 1397px;
+           }
+           .auto-style3 {
+               right: 20px;
+               top: 10%;
+               width: 61px;
+           }
+       </style>
+</asp:Content>
 
-                  <input type = "hidden" name = "total-hidden-charges" 
-                     id = "total-hidden-charges" value = "0" />
-               </div>
+  
 
-               <button type = "submit" id = "Submit">CheckOut</button>
-            </form>
-         </div> 
-		
-      </div>
-   </body>
-</html>
+    
+         <asp:Content ContentPlaceHolderID="Body" ID ="Body" runat="server">
+
+  <div class="auto-style1">
+		<div class="heading">
+			<h1>Shopping Cart</h1>
+		</div>
+		<div class="cart">
+			<i class="fa fa-shopping-basket fa-2x"></i>
+      <i class="fa fa-caret-down"></i>
+            <br/>
+			<div class="total-text">
+				<p>Items</p>
+				<p id="items-basket"></p>
+			</div>
+		</div>
+
+
+
+	</div>
+    <div>
+	<div class="auto-style2">
+		<!-- Item 1 -->
+		<div class="item">
+			<img src="https://assets.razerzone.com/eeimages/products/26727/rzrblade14-04__store_gallery.png">
+			<div class="overflow">
+				<i class="fa fa-cart-plus fa-5x" id="basket"></i>
+			</div>
+			<div class="item-detail">
+				<h4>RAZER BLADE - FULL HD</h4>
+				<div class="prices">
+					<p class="price">1899</p>
+					<p>$</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Item 2 -->
+		<div class="item">
+			<img src="https://assets.razerzone.com/eeimages/products/752/razer-ouroboros-gallery-3__store_gallery.png">
+			<div class="overflow">
+				<i class="fa fa-cart-plus fa-5x"></i>
+			</div>
+			<div class="item-detail">
+				<h4>RAZER OUROBOROS</h4>
+				<div class="prices">
+					<p class="price">149</p>
+					<p>$</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Item 3 -->
+		<div class="item">
+			<img src="https://assets.razerzone.com/eeimages/products/5890/razer-blackshark-gallery-4__store_gallery.png">
+			<div class="overflow">
+				<i class="fa fa-cart-plus fa-5x"></i>
+			</div>
+			<div class="item-detail">
+				<h4>RAZER BLACKSHARK</h4>
+				<div class="prices">
+					<p class="price">1299</p>
+					<p>$</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Item 4 -->
+		<div class="item">
+			<img src="https://assets.razerzone.com/eeimages/products/26600/razer-blackwidow-chroma-v2-gallery-04-wristrest__store_gallery.png">
+			<div class="overflow">
+				<i class="fa fa-cart-plus fa-5x"></i>
+			</div>
+			<div class="item-detail">
+				<h4>RAZER BLACKWIDOW CHROMA</h4>
+				<div class="prices">
+					<p class="price">169</p>
+					<p>$</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Item 5 -->
+		<div class="item">
+			<img src="https://assets.razerzone.com/eeimages/products/21936/fireflycloth-gallery-5__store_gallery.png">
+			<div class="overflow">
+				<i class="fa fa-cart-plus fa-5x"></i>
+			</div>
+			<div class="item-detail">
+				<h4>RAZER FIREFLY CLOTH</h4>
+				<div class="prices">
+					<p class="price">59</p>
+					<p>$</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Item 6 -->
+		<div class="item">
+			<img src="https://assets.razerzone.com/eeimages/products/23901/nabu-watch-std-01__store_gallery.png">
+			<div class="overflow">
+				<i class="fa fa-cart-plus fa-5x"></i>
+			</div>
+			<div class="item-detail">
+				<h4>RAZER NABU WATCH</h4>
+				<div class="prices">
+					<p class="price">149</p>
+					<p>$</p>
+				</div>
+			</div>
+		</div>
+
+		<div id="cart-items" class="auto-style3">
+			<ol id="list-item">
+			</ol>
+
+			<div class="total-text">
+					<p>Total: </p>
+					<p id="total-price"></p>
+			</div>
+		</div>
+
+
+
+	</div>
+</div>
+</asp:Content>
+
+
+

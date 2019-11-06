@@ -7,11 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Form
-{
-
-
-    public partial class product
-    {
+namespace Form {
+    
+    
+    public partial class product {
     }
 }
