@@ -1,163 +1,222 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Add-drop2.aspx.cs" Inherits="Form.Add_drop2" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Add-drop2.aspx.cs" Inherits="Form.Add_drop2" %>
 
 <!DOCTYPE html>
-<link href="Content/easyui.css" rel="stylesheet" />
-<script src="scripts/jquery-2.1.0.min.js"></script>
-<script src="scripts/jquery.easyui.min.js"></script> <!--"#0000ff" face="Consolas">-->
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-    <style type="text/css">
-        .auto-style1 {
-            width: 157px;
-            height: 142px;
-        }
-        .auto-style2 {
-            width: 151px;
-            height: 129px;
-        }
-        .auto-style3 {
-            width: 136px;
-            height: 143px;
-        }
-        .auto-style4 {
-            width: 153px;
-            height: 135px;
-        }
-        .auto-style5 {
-            height: 560px;
-        }
-        .auto-style6 {
-            height: 313px;
-        }
-        .auto-style7 {
-            height: 95px;
-        }
-    </style>
-     <script type = "text/javascript">
-   		 $('.item').draggable({
-                revert: true,
-                proxy: 'clone',
-                onStartDrag: function () {
-                    $(this).draggable('options').cursor = 'not-allowed';
-                    $(this).draggable('proxy').css('z-index', 10);
-                },
-                onStopDrag: function () {
-                    $(this).draggable('options').cursor = 'move';
-                }
-            });
-      </script>
-       <script type="text/javascript">
-           $('.cart').droppable({
-                onDragEnter: function (e, source) {
-                    $(source).draggable('options').cursor = 'auto';
-                },
-                onDragLeave: function (e, source) {
-                    $(source).draggable('options').cursor = 'not-allowed';
-                },
-                onDrop: function (e, source) {
-                    var name = $(source).find('p:eq(0)').html();
-                    var price = $(source).find('p:eq(1)').html();
-                    alert("Item dropped!");
-                    addProduct(name, parseFloat(price.split('$')[1]));
-                }
-            });
-      
- 
-        function addProduct(name, price) {
-            function add() {
-                for (var i = 0; i < data.total; i++) {
-                    var row = data.rows[i];
-                    if (row.name == name) {
-                        row.quantity += 1;
-                        return;
-                    }
-                }
-                data.total += 1;
-                data.rows.push({
-                    name: name,
-                    quantity: 1,
-                    price: price
-                });
-            }
-            add();
-            totalCost += price;
-            $('#cartcontent').datagrid('loadData', data);
-            $('div.cart .total').html('Total: $' + totalCost);
-        }
-       </script>
+<html xmlns="https://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Untitled Document</title>
+<script type="text/javascript" src="jquery-1.3.2.js"></script>
+<script type="text/javascript" src="jquery.livequery.js"></script>
+<link href="css.css" rel="stylesheet" />
+<script type="text/javascript">
+
+$(document).ready(function() {
+	
+	var Arrays=new Array();
+	
+	$('#wrap li').mousemove(function(){
+		
+		var position = $(this).position();
+		
+		$('#cart').stop().animate({
+																									
+				left   : position.left+'px',
+				
+			},250,function(){
+			
+		});			
+	}).mouseout(function(){
+		
+	});	
+	
+	$('#wrap li').click(function(){
+		
+		var thisID = $(this).attr('id');
+		
+		var itemname  = $(this).find('div .name').html();
+		var itemprice = $(this).find('div .price').html();
+			
+		if(include(Arrays,thisID))
+		{
+			var price 	 = $('#each-'+thisID).children(".shopp-price").find('em').html();
+			var quantity = $('#each-'+thisID).children(".shopp-quantity").html();
+			quantity = parseInt(quantity)+parseInt(1);
+			
+			var total = parseInt(itemprice)*parseInt(quantity);
+			
+			$('#each-'+thisID).children(".shopp-price").find('em').html(total);
+			$('#each-'+thisID).children(".shopp-quantity").html(quantity);
+			
+			var prev_charges = $('.cart-total span').html();
+			prev_charges = parseInt(prev_charges)-parseInt(price);
+			
+			prev_charges = parseInt(prev_charges)+parseInt(total);
+			$('.cart-total span').html(prev_charges);
+			
+			$('#total-hidden-charges').val(prev_charges);
+		}
+		else
+		{
+			Arrays.push(thisID);
+			
+			var prev_charges = $('.cart-total span').html();
+			prev_charges = parseInt(prev_charges)+parseInt(itemprice);
+			
+			$('.cart-total span').html(prev_charges);
+			$('#total-hidden-charges').val(prev_charges);
+			
+			$('#left_bar .cart-info').append('<div class="shopp" id="each-'+thisID+'"><div class="label">'+itemname+'</div><div class="shopp-price"> $<em>'+itemprice+'</em></div><span class="shopp-quantity">1</span><img src="remove.png" class="remove" /><br class="all" /></div>');
+			
+			$('#cart').css({'-webkit-transform' : 'rotate(20deg)','-moz-transform' : 'rotate(20deg)' });
+		}
+		
+		setTimeout('angle()',200);
+	});	
+	
+	
+	$('.remove').livequery('click', function() {
+		
+		var deduct = $(this).parent().children(".shopp-price").find('em').html();
+		var prev_charges = $('.cart-total span').html();
+		
+		var thisID = $(this).parent().attr('id').replace('each-','');
+		
+		var pos = getpos(Arrays,thisID);
+		Arrays.splice(pos,1,"0")
+		
+		prev_charges = parseInt(prev_charges)-parseInt(deduct);
+		$('.cart-total span').html(prev_charges);
+		$('#total-hidden-charges').val(prev_charges);
+		$(this).parent().remove();
+		
+	});	
+	
+	$('#Submit').livequery('click', function() {
+		
+		var totalCharge = $('#total-hidden-charges').val();
+		
+		$('#left_bar').html('Total Charges: $'+totalCharge);
+		
+		return false;
+		
+	});	
+	
+});
+
+function include(arr, obj) {
+  for(var i=0; i<arr.length; i++) {
+    if (arr[i] == obj) return true;
+  }
+}
+function getpos(arr, obj) {
+  for(var i=0; i<arr.length; i++) {
+    if (arr[i] == obj) return i;
+  }
+}
+function angle(){$('#cart').css({'-webkit-transform' : 'rotate(0deg)','-moz-transform' : 'rotate(0deg)' });}
+
+</script>
 </head>
-  
+
 <body>
-    <form id="form1" runat="server">
-        <div>
-            <div class="cart">
-			<i class="fa fa-shopping-basket fa-2x"></i>
-      <i class="fa fa-caret-down"></ib><r>
-			<div class="total-text">
-				<p>Items</p>
-				<p id="items-basket"></p>
-			</div>
+
+<div style="float: none" >
+	
+	<div id="wrap" >
+		
+		<ul>
+			<li id="1">
+				<img src="Images/Ps4.jpg" class="items" height="100" alt="" border="0" />
+				
+				<br  />
+				<div><span class="name">Learn Java: Price</span>: $<span class="price">800</span> </div>
+			</li>
+			<li id="2">
+				<img src="5.png" class="items" height="100" alt="" />
+				
+				<br  />
+				<div><span class="name">Learn HTML </span>: $<span class="price">500 </span></div>
+			</li>
+			<li id="3">
+				<img src="1.png" class="items" height="100" alt="" />
+				
+				<br  />
+				<div><span class="name">Learn Android </span>: $<span class="price">450</span></div>
+			</li>
+			
+			<li id="4">
+				<img src="6.png" class="items" height="100" alt="" />
+				
+				<br  />
+				<div><span class="name">Learn SVG </span>: $<span class="price">1200 </span></div>
+			</li>
+			<li id="5">
+				<img src="7.png" class="items" height="100" alt="" />
+				
+				<br />
+				<div> <span class="name">Learn Bootstrap</span>: $<span class="price">65</span></div>
+			</li>
+			
+			<li id="6">
+				<img src="5.png" class="items" height="100" alt="" />
+				
+				<br  />
+				<div><span class="name">Learn HTML</span>: $<span class="price">800</span> </div>
+			</li>
+			
+			<li id="7">
+				<img src="7.png" class="items" height="100" alt="" />
+				
+				<br  />
+				<div><span class="name"> Learn Bootstrap </span>: $<span class="price">45</span></div>
+			</li>
+			<li id="8">
+				<img src="6.png" class="items" height="100" alt="" />
+				
+				<br  />
+				<div><span class="name">Learn SVG</span>: $<span class="price">900 </span></div>
+			</li>
+			
+			<li id="9">
+				<img src="8.png" class="items" height="100" alt="" />
+				
+				<br />
+				<div><span class="name">Learn Angular Js </span>: $<span class="price">20</span></div>
+			</li>
+			
+		</ul>
+		
+		<br  />
+		
+		
+	
+	</div>
+	
+	<div id="left_bar"> 
+		
+		<form action="#" id="cart_form" name="cart_form">
+		
+		<div class="cart-info"></div>
+		
+		<div class="cart-total">
+		
+			<b>Total Charges:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> $<span>0</span>
+			
+			<input type="hidden" name="total-hidden-charges" id="total-hidden-charges" value="0" />
 		</div>
+		
+		<button type="submit" id="Submit">CheckOut</button>
+		
+		</form>
+		
+	</div> 
+		
+		
+	
+</div>
 
-            <ul class="products">
-            <li>
-                <%--<a href="#" class="item">--%>
-                    <img class="auto-style4" src="Images/Xboxonex.jpg" />
-                    <div>
-                        <p>Xbox one x</p>
-                        <p>Price:$366</p>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="item">
-                    <img src="Images/Ps4Controller.jpg" class="auto-style3" />
-                    <div>
-                        <p>Xbox Controller</p>
-                        <p>Price:$25</p>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="item">
-                    <img src="Images/Ps4Controller.jpg" class="auto-style2" />
-                    <div>
-                        <p>Ps4 Controller</p>
-                        <p>Price:$34</p>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="item">
-                    <img src="Images/Ps4.jpg" class="auto-style1" />
-                    <div>
-                        <p>PS4</p>
-                        <p>Price:$625</p>
-                    </div>
-                </a>
-            </li>
-        </ul>
-        </div>
 
-        <div class="cart">
-            <h1>Shopping Cart</h1>
-            <div style="background: #fff">
-                <table id="cartcontent"  style="width: 300px; height: auto;">
-                    <thead>
-                        <tr>
-                            <th  id="Name" style="width: 160px">Name</th>
-                            <th  id="Quantity" style="width: 40px; text-align: right">Quantity</th>
-                            <th   id="Price" style="width: 40px; text-align: right;">Price</th>
-                        </tr>
-                    </thead>
-                </table>
-            <p class="auto-style7">Total: $0</p>
-            </div>
-            <h2 class="auto-style6">Drop here to add to cart</h2>
-        </div>
 
-    </form>
 </body>
 </html>

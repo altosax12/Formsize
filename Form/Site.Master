@@ -1,10 +1,19 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Form.Site" %>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Form.Site" %>
 
 <!DOCTYPE html>
 
 <html>
-<head runat="server">
-    <title></title>
+    
+<head runat="server"> 
+     <meta http-equiv = "Content-Type" content = "text/html; charset = iso-8859-1" />
+      <title></title>
+      <script type = "text/javascript" src = "jquery-1.3.2.js"></script>
+      <script type = "text/javascript" src = "jquery.livequery.js"></script>
+      <link href = "css.css" rel = "stylesheet" />
+
+  
+     <asp:ContentPlaceHolder ID ="Header" runat="server">
+    
     
         <style type="text/css">
 
@@ -33,11 +42,12 @@
                 margin-top: 0px;
             }
     </style>
-
-   
-</head>
-<body style="height: 1490px; width: 1385px; margin-left: 72px;">
     
+   </asp:ContentPlaceHolder>
+</head>   
+ 
+<body style="height: 1490px; width: 1385px; margin-left: 72px;">
+     <asp:ContentPlaceHolder ID ="Body" runat="server">
 
     <form id="form1" runat="server">
 
@@ -54,10 +64,9 @@
             <asp:Menu ID="Menu1" runat="server" Orientation="Horizontal" OnMenuItemClick="Menu1_MenuItemClick" Height="12px">
                 <Items>
                     <asp:MenuItem Text="Home" Value="Home"></asp:MenuItem>
-                    <asp:MenuItem Text="Video Games" Value="Items"></asp:MenuItem>
-                    <asp:MenuItem Text="Toys &amp; Collectables " Value="Toys &amp; Collectables "></asp:MenuItem>
-                    <asp:MenuItem Text="Electronics " Value="Electronics "></asp:MenuItem>
-                    <asp:MenuItem Text="Clothing " Value="Clothing "></asp:MenuItem>
+                    <asp:MenuItem Text="Items" Value="Items" NavigateUrl="~/Add-drop.aspx"></asp:MenuItem>
+                    <asp:MenuItem Text="Form" Value="Form"></asp:MenuItem>
+                    <asp:MenuItem Value=" " Target="Form"></asp:MenuItem>
                 </Items>
                 <StaticMenuItemStyle BorderColor="White" BorderWidth="18px" />
             </asp:Menu>
@@ -68,11 +77,11 @@
          
 
     <div class="auto-style4">
-       <asp:ContentPlaceHolder ID ="Body" runat="server">
+      
 
 
 
-       </asp:ContentPlaceHolder>
+       
     </div>
 
         
@@ -87,5 +96,6 @@
         
      
     </form>
+    </asp:ContentPlaceHolder>
          </body>
 </html>
