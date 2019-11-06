@@ -30,7 +30,7 @@
 
    
 </head>
-<body style="height: 1490px; width: 1385px; margin-left: 72px;">
+<body style="height: 1478px; width: 1385px; margin-left: 72px;">
     
 
     <form id="form1" runat="server">
@@ -58,15 +58,15 @@
         
      
          
-
+  <asp:ContentPlaceHolder  ID ="Body" runat="server">
     <div class="auto-style4">
-       <asp:ContentPlaceHolder ID ="Body" runat="server">
+      
 
 
 
-       </asp:ContentPlaceHolder>
+      
     </div>
-
+ </asp:ContentPlaceHolder>
         
     <div class="auto-style5" style="text-align: center">
         Contact us with 
