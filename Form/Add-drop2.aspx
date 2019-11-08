@@ -121,6 +121,8 @@ function angle(){$('#cart').css({'-webkit-transform' : 'rotate(0deg)','-moz-tran
 
 <body>
 
+    <form id="form1" runat="server">
+
 <div style="float: none" >
 	
 	<div id="wrap" >
@@ -128,15 +130,17 @@ function angle(){$('#cart').css({'-webkit-transform' : 'rotate(0deg)','-moz-tran
 		<ul>
 			<li id="1">
 				<img src="Images/Ps4.jpg" class="items" height="100" alt="" border="0" />
+                <asp:Button ID="btn1" runat="server" OnClick="Button1_Click" Text="Add to Cart" />
 				
 				<br  />
 				<div><span class="name">Learn Java: Price</span>: $<span class="price">800</span> </div>
 			</li>
 			<li id="2">
-				<img src="5.png" class="items" height="100" alt="" />
+				<img src="5.png" class="items" height="100" alt
+                <asp:Button ID="btn2" runat="server" Text="Add to Cart" />
 				
 				<br  />
-				<div><span class="name">Learn HTML </span>: $<span class="price">500 </span></div>
+				<div><span class="name">Learn HTML  HTML </span>: $<span class="price">500 </span></div>
 			</li>
 			<li id="3">
 				<img src="1.png" class="items" height="100" alt="" />
@@ -195,8 +199,6 @@ function angle(){$('#cart').css({'-webkit-transform' : 'rotate(0deg)','-moz-tran
 	
 	<div id="left_bar"> 
 		
-		<form action="#" id="cart_form" name="cart_form">
-		
 		<div class="cart-info"></div>
 		
 		<div class="cart-total">
@@ -208,13 +210,15 @@ function angle(){$('#cart').css({'-webkit-transform' : 'rotate(0deg)','-moz-tran
 		
 		<button type="submit" id="Submit">CheckOut</button>
 		
-		</form>
-		
 	</div> 
 		
 		
 	
 </div>
+
+
+
+    </form>
 
 
 

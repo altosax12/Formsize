@@ -12,10 +12,11 @@
       <link href = "css.css" rel = "stylesheet" />
 
   
-     <asp:ContentPlaceHolder ID ="Header" runat="server">
+     
     
     
-        <style type="text/css">
+         <style type="text/css">
+
 
 
 
@@ -42,22 +43,23 @@
                 margin-top: 0px;
             }
     </style>
-    
+    <asp:ContentPlaceHolder ID ="Header" runat="server">
    </asp:ContentPlaceHolder>
 </head>   
  
-<body style="height: 1490px; width: 1385px; margin-left: 72px;">
-     <asp:ContentPlaceHolder ID ="Body" runat="server">
+<body style="height: 1490px; width: 1369px; margin-left: 14px;">
+     
 
     <form id="form1" runat="server">
 
         
      
         <div class="auto-style2" style="background-color: darkblue; ">
+            
           <br>
           <br>
         <h1 class="auto-style6" style="text-align: center; color: #FF0000;">GamerBay </h1>
-
+            
         </div>
 
         <div class="auto-style3" style="padding: 11px; margin: 20px">
@@ -77,25 +79,28 @@
          
 
     <div class="auto-style4">
-      
+      <asp:ContentPlaceHolder ID ="Body" runat="server">
 
 
 
-       
+       </asp:ContentPlaceHolder>
     </div>
 
+           
         
-    <div class="auto-style5" style="text-align: center">
+    <div class="auto-style5" style="text-align: center"> 
+        
         Contact us with 
         <asp:ImageButton ID="ImageButton1" runat="server" Height="48px" ImageUrl="~/Images/facebookl.png" OnClick="ImageButton1_Click" Width="45px" class="img-fluid" />
 &nbsp;
         <asp:ImageButton ID="ImageButton2" runat="server" Height="42px" ImageUrl="~/Images/twitter.png" Width="43px" class="img-fluid" />
 &nbsp;
         <asp:ImageButton ID="ImageButton3" runat="server" Height="58px" ImageUrl="~/Images/insta.png" Width="55px" class="img-fluid"/>
+       
     </div>
         
      
     </form>
-    </asp:ContentPlaceHolder>
+    
          </body>
 </html>
